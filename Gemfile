@@ -1,0 +1,16 @@
+source 'https://rubygems.org'
+
+gem 'addressable'
+gem 'byebug'
+gem 'json'
+#gem 'pdfkit'
+gem 'rest-client'
+gem 'rubocop'
+gem 'wkhtmltopdf'
+gem "nokogiri"
+#gem 'csv'
+gem 'webmock'
+gem 'down'
+gem 'fileutils'
+gem 'progressbar'
+gem 'tzinfo'
