@@ -44,6 +44,7 @@ class UtcTimeOffsetCities
 
     def text_to_display(value_i, value_s)
       value_s = value_s.gsub(/\.?0+$/, '').gsub!('.5', ':30')
+      value_s = '0' if value_i == 0
       (value_i >= 0 ? "+#{value_s}" : value_s)
     end
 
