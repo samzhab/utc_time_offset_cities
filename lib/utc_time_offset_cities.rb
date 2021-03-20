@@ -15,12 +15,21 @@ class UtcTimeOffsetCities
 
   class << self
     def get_utc_offset_for(location)
-      @location = location.strip
-      @city = location.split(',').first.to_s.strip.downcase
-      @country = location.split(',').last.to_s.strip.downcase
+      @location = location.to_s.strip
+      return 'not found' if @location.empty?
+
+      @city, @country = split_location
+      return 'not found' if @city.empty? || @country.empty?
+
       utc_offset = utc_offset_by_crawling
       utc_offset = utc_offset_with_api if utc_offset.to_s == 'not found'
       utc_offset
+    end
+
+    def split_location
+      splitted = @location.split(',').map { |lc| lc.to_s.strip.downcase }
+      splitted << '' if splitted.count == 1
+      splitted
     end
 
     def utc_offset_with_api
@@ -29,7 +38,7 @@ class UtcTimeOffsetCities
 
       tz = TZInfo::Timezone.get(timezone_data['zoneName'].to_s)
       value_i = (tz.current_period.utc_total_offset.to_f / 3600.00)
-      text = text_to_display(value_i, value_i.to_s)
+      text = text_to_display(value_i)
       (text.empty? ? 'not found' : "UTC#{text}")
     rescue StandardError
       'not found'
@@ -38,14 +47,16 @@ class UtcTimeOffsetCities
     def timezone_data_with_geo_code
       geocode_data = get_data_from_api('geocode',
                                        "#{GEOCODE_API_URL}#{@location}")
+      sleep 0.2
       get_data_from_api('timezone',
                         "#{TIMEZONE_API_URL}lat=#{geocode_data['latitude']}&lng=#{geocode_data['longitude']}")
     end
 
-    def text_to_display(value_i, value_s)
-      value_s = value_s.gsub(/\.?0+$/, '').gsub!('.5', ':30')
-      value_s = '0' if value_i == 0
-      (value_i >= 0 ? "+#{value_s}" : value_s)
+    def text_to_display(value_i)
+      value_s = value_i.to_s
+      value_s = value_s.gsub(/\.?0+$/, '')
+      value_s = '0' if value_i.zero?
+      (value_i >= 0 ? "+#{value_s}" : value_s).gsub('.5', ':30')
     end
 
     def get_data_from_api(type, url)
