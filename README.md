@@ -56,9 +56,12 @@ Setup & usage
 - Move into the cloned directory
   `$ cd utc_time_offset_cities`
 - Install both gems
+  `$ cd utc_time_offset_cities`
   `$ gem install utc_time_offset_cities`
+  `$ cd ..`
+  `$ cd assign_utc_offsets`
   `$ gem install assign_utc_offsets`
-- open irb
+- then open irb
   `$ irb`
 
 - To use utc_time_offset_cities
@@ -67,6 +70,7 @@ Setup & usage
   UtcTimeOffsetCities.get_utc_offset_for(city, country)
 
 - To use assign_utc_offsets
+- This should be within the folder assign_utc_offsets
 - within irb run
   require 'assign_utc_offsets'
   AssignUtcOffsets.start_processing('available_locs_for_trend.json')
