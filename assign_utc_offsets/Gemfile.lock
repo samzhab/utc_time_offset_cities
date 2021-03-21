@@ -1,0 +1,12 @@
+GEM
+  specs:
+    utc_time_offset_cities (0.0.0)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  utc_time_offset_cities
+
+BUNDLED WITH
+   2.2.3

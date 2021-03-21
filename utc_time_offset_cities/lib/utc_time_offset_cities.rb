@@ -46,21 +46,21 @@ class UtcTimeOffsetCities
     end
 
     def timezone_data_with_geo_code
-      geocode_data = get_geocode_data
+      geocode_data = geocode_data_for_location
       sleep 0.2
       get_data_from_api('timezone',
                         "#{TIMEZONE_API_URL}lat=#{geocode_data['latitude']}&lng=#{geocode_data['longitude']}")
     end
 
-    def get_geocode_data
+    def geocode_data_for_location
       cordinate_hash = {}
-      result = Geocoder.search("#{@location}").first
+      result = Geocoder.search(@location.to_s).first
       if !result.nil?
         cordinate_hash['latitude'] = result.coordinates.first
         cordinate_hash['longitude'] = result.coordinates.last
       else
         cordinate_hash = get_data_from_api('geocode',
-                                       "#{GEOCODE_API_URL}#{@location}")
+                                           "#{GEOCODE_API_URL}#{@location}")
       end
       cordinate_hash
     end
@@ -68,7 +68,7 @@ class UtcTimeOffsetCities
     def text_to_display(value_i)
       value_s = value_i.to_s.gsub(/\.?0+$/, '').gsub('.5', ':30')
       value_s = '0' if value_i.zero?
-      value_s = (value_i >= 0 ? "+#{value_s}" : value_s)
+      (value_i >= 0 ? "+#{value_s}" : value_s)
     end
 
     def get_data_from_api(type, url)
