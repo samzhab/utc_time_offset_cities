@@ -1,3 +1,4 @@
+# Copyright (c) 2021 Samuel Y. Ayele
 # frozen_string_literal: true
 
 require 'utc_time_offset_cities'

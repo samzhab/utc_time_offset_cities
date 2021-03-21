@@ -1,6 +1,7 @@
 # Common configuration.
 AllCops:
   # Include common Ruby source files.
+  NewCops: enable
   Include:
     - '**/*.gemspec'
     - '**/*.podspec'
@@ -1624,7 +1625,6 @@ Style/WhileUntilModifier:
                  single-line body.
   StyleGuide: 'https://github.com/samzhab/ruby-style-guide#while-as-a-modifier'
   Enabled: true
-  Layout/LineLength: 80
 
 Style/WordArray:
   Description: 'Use %w or %W for arrays of words.'
