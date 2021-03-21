@@ -19,6 +19,7 @@ GEM
     down (5.2.0)
       addressable (~> 2.5)
     fileutils (1.5.0)
+    geocoder (1.6.6)
     hashdiff (1.0.1)
     http-accept (1.7.0)
     http-cookie (1.0.3)
@@ -88,6 +89,7 @@ DEPENDENCIES
   byebug
   down
   fileutils
+  geocoder
   json
   nokogiri
   progressbar

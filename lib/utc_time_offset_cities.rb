@@ -7,6 +7,7 @@ require 'addressable'
 require 'rest-client'
 require 'nokogiri'
 require 'tzinfo'
+require 'geocoder'
 # Class to get the UTC-OFFSET
 class UtcTimeOffsetCities
   CRAWL_URL = 'https://time.is/time_zones'
@@ -45,18 +46,29 @@ class UtcTimeOffsetCities
     end
 
     def timezone_data_with_geo_code
-      geocode_data = get_data_from_api('geocode',
-                                       "#{GEOCODE_API_URL}#{@location}")
+      geocode_data = get_geocode_data
       sleep 0.2
       get_data_from_api('timezone',
                         "#{TIMEZONE_API_URL}lat=#{geocode_data['latitude']}&lng=#{geocode_data['longitude']}")
     end
 
+    def get_geocode_data
+      cordinate_hash = {}
+      result = Geocoder.search("#{@location}").first
+      if !result.nil?
+        cordinate_hash['latitude'] = result.coordinates.first
+        cordinate_hash['longitude'] = result.coordinates.last
+      else
+        cordinate_hash = get_data_from_api('geocode',
+                                       "#{GEOCODE_API_URL}#{@location}")
+      end
+      cordinate_hash
+    end
+
     def text_to_display(value_i)
-      value_s = value_i.to_s
-      value_s = value_s.gsub(/\.?0+$/, '')
+      value_s = value_i.to_s.gsub(/\.?0+$/, '').gsub('.5', ':30')
       value_s = '0' if value_i.zero?
-      (value_i >= 0 ? "+#{value_s}" : value_s).gsub('.5', ':30')
+      value_s = (value_i >= 0 ? "+#{value_s}" : value_s)
     end
 
     def get_data_from_api(type, url)
