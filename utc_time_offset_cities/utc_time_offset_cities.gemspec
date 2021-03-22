@@ -1,7 +1,7 @@
 Gem::Specification.new do |s| 
   ### REQUIRED ###
   s.name        = 'utc_time_offset_cities'
-  s.version     = '0.0.0'
+  s.version     = '1.0.0'
   s.summary     = "Gem for getting UTC Offset"
   s.authors     = ["Abin Abraham"]
   s.files       = ["lib/utc_time_offset_cities.rb"] 
