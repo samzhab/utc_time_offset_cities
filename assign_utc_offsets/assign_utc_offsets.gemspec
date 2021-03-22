@@ -1,7 +1,7 @@
 Gem::Specification.new do |s| 
   ### REQUIRED ###
     s.name        = 'assign_utc_offsets'
-    s.version     = '0.0.0'
+    s.version     = '1.0.0'
     s.summary     = "Gem to parse a json and assign utc offsets for locations"
     s.authors     = ["Abin Abraham"]
     s.files       = ["lib/assign_utc_offsets.rb"] 
