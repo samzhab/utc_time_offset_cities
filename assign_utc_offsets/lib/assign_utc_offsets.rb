@@ -28,5 +28,3 @@ class AssignUtcOffsets
     end
   end
 end
-
-AssignUtcOffsets.start_processing('available_locs_for_trend.json')
