@@ -47,7 +47,6 @@ class UtcTimeOffsetCities
 
     def timezone_data_with_geo_code
       geocode_data = geocode_data_for_location
-      sleep 0.2
       get_data_from_api('timezone',
                         "#{TIMEZONE_API_URL}lat=#{geocode_data['latitude']}&lng=#{geocode_data['longitude']}")
     end

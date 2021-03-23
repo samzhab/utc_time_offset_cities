@@ -2,18 +2,21 @@
 # frozen_string_literal: true
 
 require 'utc_time_offset_cities'
+require 'parallel'
 # json updater
 class AssignUtcOffsets
   class << self
     def start_processing(path)
       file = File.read(path)
       json_data = JSON.parse(file)
-      json_data.each do |dt|
-        utc_offset = UtcTimeOffsetCities.get_utc_offset_for("#{dt['name']}, #{dt['country']}")
-        dt['utc_offset'] = utc_offset
-        puts "#{dt['name']}, #{dt['country']}: #{utc_offset}"
-      end
+      Parallel.each(json_data, in_threads: 2) { |location| assign_utc_offset(location) }
       write_to_file(json_data)
+    end
+
+    def assign_utc_offset(location)
+      location['utc_offset'] = UtcTimeOffsetCities.get_utc_offset_for("#{location['name']},
+                                                                      #{location['country']}")
+      puts "#{location['name']}, #{location['country']}: #{location['utc_offset']}"
     end
 
     def write_to_file(json_data)
@@ -25,3 +28,5 @@ class AssignUtcOffsets
     end
   end
 end
+
+AssignUtcOffsets.start_processing('available_locs_for_trend.json')
