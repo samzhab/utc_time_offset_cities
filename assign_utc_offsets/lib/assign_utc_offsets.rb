@@ -11,12 +11,14 @@ class AssignUtcOffsets
       json_data = JSON.parse(file)
       Parallel.each(json_data, in_threads: 2) { |location| assign_utc_offset(location) }
       write_to_file(json_data)
+      'completed'
     end
 
     def assign_utc_offset(location)
       location['utc_offset'] = UtcTimeOffsetCities.get_utc_offset_for("#{location['name']},
                                                                       #{location['country']}")
       puts "#{location['name']}, #{location['country']}: #{location['utc_offset']}"
+      location
     end
 
     def write_to_file(json_data)
