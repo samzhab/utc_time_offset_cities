@@ -35,7 +35,9 @@ class UtcTimeOffsetCities
 
     def utc_offset_with_api
       timezone_data = timezone_data_with_geo_code
-      return 'not found' unless TZInfo::Timezone.all_identifiers.include?(timezone_data['zoneName'].to_s)
+      unless TZInfo::Timezone.all_identifiers.include?(timezone_data['zoneName'].to_s)
+        return 'not found'
+      end
 
       tz = TZInfo::Timezone.get(timezone_data['zoneName'].to_s)
       value_i = (tz.current_period.utc_total_offset.to_f / 3600.00)
@@ -47,23 +49,21 @@ class UtcTimeOffsetCities
 
     def timezone_data_with_geo_code
       geocode_data = geocode_data_for_location
-<<<<<<< HEAD
       sleep 0.2
-=======
->>>>>>> 5364204dd8fc755218829779c6da9fce77647c6c
       get_data_from_api('timezone',
-                        "#{TIMEZONE_API_URL}lat=#{geocode_data['latitude']}&lng=#{geocode_data['longitude']}")
+                        "#{TIMEZONE_API_URL}lat=#{geocode_data['latitude']}"\
+                        "&lng=#{geocode_data['longitude']}")
     end
 
     def geocode_data_for_location
       cordinate_hash = {}
       result = Geocoder.search(@location.to_s).first
-      if !result.nil?
-        cordinate_hash['latitude'] = result.coordinates.first
-        cordinate_hash['longitude'] = result.coordinates.last
-      else
+      if result.nil?
         cordinate_hash = get_data_from_api('geocode',
                                            "#{GEOCODE_API_URL}#{@location}")
+      else
+        cordinate_hash['latitude'] = result.coordinates.first
+        cordinate_hash['longitude'] = result.coordinates.last
       end
       cordinate_hash
     end
@@ -94,7 +94,8 @@ class UtcTimeOffsetCities
     end
 
     def utc_offset_found(section)
-      section.css('.country').text.to_s.downcase.include?(@country) && section.text.to_s.downcase.include?(@city)
+      section.css('.country').text.to_s.downcase.include?(@country) &&
+        section.text.to_s.downcase.include?(@city)
     end
 
     def get_request(url, headers)

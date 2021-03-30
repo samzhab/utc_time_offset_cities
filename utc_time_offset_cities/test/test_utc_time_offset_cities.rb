@@ -1,3 +1,4 @@
+# Copyright (c) 2021 Samuel Y. Ayele
 # frozen_string_literal: true
 
 require 'utc_time_offset_cities'
@@ -35,10 +36,11 @@ class UtcTimeOffsetCitiesTest < Test::Unit::TestCase
 
   def test_geocode_data_for_location
     geocode_data_for_location = UtcTimeOffsetCities.geocode_data_for_location
-    assert_false geocode_data_for_location.empty? || geocode_data_for_location['latitude'].to_s.empty?
+    assert_false geocode_data_for_location.empty? ||
+                 geocode_data_for_location['latitude'].to_s.empty?
     assert_true geocode_data_for_location.is_a?(Hash)
     assert_false geocode_data_for_location['longitude'].to_s.empty?
-    assert_true geocode_data_for_location.keys.sort == %w[latitude longitude].sort
+    assert_true geocode_data_for_location.keys.sort == %w(latitude longitude).sort
   end
 
   def test_text_to_display
@@ -64,7 +66,8 @@ class UtcTimeOffsetCitiesTest < Test::Unit::TestCase
 
   def test_get_data_from_api
     geocode_data = UtcTimeOffsetCities.geocode_data_for_location
-    url = "#{UtcTimeOffsetCities::TIMEZONE_API_URL}lat=#{geocode_data['latitude']}&lng=#{geocode_data['longitude']}"
+    url = "#{UtcTimeOffsetCities::TIMEZONE_API_URL}"\
+    "lat=#{geocode_data['latitude']}&lng=#{geocode_data['longitude']}"
     data_from_api = UtcTimeOffsetCities.get_data_from_api('timezone',
                                                           url)
     assert_true data_from_api['status'] == 'OK'
@@ -75,4 +78,10 @@ class UtcTimeOffsetCitiesTest < Test::Unit::TestCase
     utc_offset = UtcTimeOffsetCities.utc_offset_by_crawling
     assert_false utc_offset.nil? || utc_offset.empty?
   end
+
+  # write tests for these >>>>
+
+  # def test_utc_offset_found
+
+  # end
 end
