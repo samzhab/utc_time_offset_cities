@@ -40,7 +40,7 @@ class UtcTimeOffsetCitiesTest < Test::Unit::TestCase
                  geocode_data_for_location['latitude'].to_s.empty?
     assert_true geocode_data_for_location.is_a?(Hash)
     assert_false geocode_data_for_location['longitude'].to_s.empty?
-    assert_true geocode_data_for_location.keys.sort == %w(latitude longitude).sort
+    assert_true geocode_data_for_location.keys.sort == %w[latitude longitude].sort
   end
 
   def test_text_to_display
@@ -79,9 +79,16 @@ class UtcTimeOffsetCitiesTest < Test::Unit::TestCase
     assert_false utc_offset.nil? || utc_offset.empty?
   end
 
-  # write tests for these >>>>
+  def test_utc_offset_found
+    response = UtcTimeOffsetCities.get_request(UtcTimeOffsetCities::CRAWL_URL.to_s, {})
+    assert_equal 200, response.code
+    section = Nokogiri::HTML(response).css('.section').last
+    response = UtcTimeOffsetCities.utc_offset_found(section)
+    assert_true !!response == response
+  end
 
-  # def test_utc_offset_found
-
-  # end
+  def test_get_request
+    response = UtcTimeOffsetCities.get_request(UtcTimeOffsetCities::CRAWL_URL.to_s, {})
+    assert_equal 200, response.code
+  end
 end
