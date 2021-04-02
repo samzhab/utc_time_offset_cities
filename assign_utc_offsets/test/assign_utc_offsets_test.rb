@@ -8,8 +8,11 @@ class AssignUtcOffsetsTest < Test::Unit::TestCase
   PATH = 'available_locs_for_trend.json'
 
   def test_start_processing
-    response = AssignUtcOffsets.start_processing(PATH)
+    response = AssignUtcOffsets.start_processing("test/test_files/sample_test.json")
     assert_true response == 'completed'
+    sleep 0.3
+    assert_true File.exist?("#{Dir.pwd}/utc_offset_assigned_available_locations.json")
+    assert_true File.exist?("#{Dir.pwd}/utc_offset_assigned_available_locations_grouped.json")
   rescue StandardError
     assert_true false
   end
@@ -22,11 +25,6 @@ class AssignUtcOffsetsTest < Test::Unit::TestCase
     assert_true response['name'] == sample_input['name']
     assert_true response['country'] == sample_input['country']
     assert_true response['utc_offset'] == 'UTC+9'
-  end
-
-  def test_output_file_exist
-    assert_true File.exist?("#{Dir.pwd}/utc_offset_assigned_available_locations.json")
-    assert_true File.exist?("#{Dir.pwd}/utc_offset_assigned_available_locations_grouped.json")
   end
 
   def test_write_to_file

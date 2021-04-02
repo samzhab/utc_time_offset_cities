@@ -2,7 +2,6 @@
 
 # Copyright (c) 2021 Samuel Y. Ayele
 require 'utc_time_offset_cities'
-require 'parallel'
 # json updater
 class AssignUtcOffsets
   class << self
@@ -14,8 +13,7 @@ class AssignUtcOffsets
         dt['utc_offset'] = utc_offset
         puts "#{dt['name']}, #{dt['country']}: #{utc_offset}"
       end
-      write_to_file(json_data)
-      Parallel.each(json_data, in_threads: 2) { |location| assign_utc_offset(location) }
+      json_data.each { |location| assign_utc_offset(location) }
       write_to_file(json_data)
       'completed'
     end
