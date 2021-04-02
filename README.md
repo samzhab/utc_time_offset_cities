@@ -80,6 +80,11 @@ Further Development [coming soon...]
 - Task 1 -
 - Task 1-1 -
 
+Tests
+To test gems
+move into the gem's root folder
+`$ rake test`
+
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
 This work is licensed under a
