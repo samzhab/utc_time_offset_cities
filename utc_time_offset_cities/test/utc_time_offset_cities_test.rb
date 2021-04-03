@@ -43,25 +43,28 @@ class UtcTimeOffsetCitiesTest < Test::Unit::TestCase
     assert_true geocode_data_for_location.keys.sort == %w[latitude longitude].sort
   end
 
-  def test_text_to_display
-    [-1, 1, 0, 5.5].each do |value|
-      text = UtcTimeOffsetCities.text_to_display(value)
-      text_to_display = (text.empty? ? 'not found' : "UTC#{text}")
-      check_expectations(value, text_to_display)
-    end
+  def test_text_to_display_for_positive_utcs
+    text = UtcTimeOffsetCities.text_to_display(1)
+    text_to_display = (text.empty? ? 'not found' : "UTC#{text}")
+    assert_true text_to_display == 'UTC+1'
+
+    text = UtcTimeOffsetCities.text_to_display(5.5)
+    text_to_display = (text.empty? ? 'not found' : "UTC#{text}")
+    assert_true text_to_display == 'UTC+5:30'
+
+    text = UtcTimeOffsetCities.text_to_display(0)
+    text_to_display = (text.empty? ? 'not found' : "UTC#{text}")
+    assert_true text_to_display == 'UTC+0'
   end
 
-  def check_expectations(value, text_to_display)
-    case value
-    when -1
-      assert_true text_to_display == 'UTC-1'
-    when 1
-      assert_true text_to_display == 'UTC+1'
-    when 0
-      assert_true text_to_display == 'UTC+0'
-    when 5.5
-      assert_true text_to_display == 'UTC+5:30'
-    end
+  def test_text_to_display_for_negative_utcs
+    text = UtcTimeOffsetCities.text_to_display(-1)
+    text_to_display = (text.empty? ? 'not found' : "UTC#{text}")
+    assert_true text_to_display == 'UTC-1'
+
+    text = UtcTimeOffsetCities.text_to_display(-5.5)
+    text_to_display = (text.empty? ? 'not found' : "UTC#{text}")
+    assert_true text_to_display == 'UTC-5:30'
   end
 
   def test_get_data_from_api
